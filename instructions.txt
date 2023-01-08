@@ -1,0 +1,75 @@
+#install typescript
+➜ sudo npm install -g typescript
+
+# check the version of typescript
+➜  tsc -v
+Version 4.9.4
+
+# install nodemon
+➜ npm install nodemon --save-dev
+# install nodemon
+➜ npm install -g ts-node
+
+# create package.json empty
+➜ yarn init -y
+# add dependencies in package.json
+
+# init tsc to create tsconfig.json
+➜ tsc --init
+tsconfig.json --edit the following
+
+"target": "es2016", 
+"rootDir": "./",                             
+"moduleResolution": "node", 
+"outDir": "./dist", 
+
+➜ yarn dev
+
+###Application runs...
+
+#1 run with code #1. BEGIN to #1. END in index.ts
+browser go to
+http://localhost:4000/auth/google/url
+to see the URL that we get
+https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fauth%2Fgoogle&client_id=403157937476-ijm04o7773vscaec3amh6i91amirslpj.apps.googleusercontent.com&access_type=offline&response_type=code&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email
+
+Copy the auth url in browser address to invoke the auth url
+It authenticates the user and then redirects with auth code to the redirect url in address bar
+http://localhost:4000/auth/google?code=4/0AWgavdfNIp3fhTUDOIgF4D9Hxu8PfddkuDRTyzjcEIZ27uma8_fRHMnC8vnazw-WM82Obg&scope=email%20profile%20https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email%20openid&authuser=0&hd=xxx.com&prompt=consent
+so we get the following result in browser content pane as we did not put the mapping in index.ts
+Cannot GET /auth/google
+
+#2 run with code #2. BEGIN to #2. END in index.ts
+Stop and restart yarn dev
+
+Now Open inspect on browser to see the network traffic
+invoke the auth url agin in the browser with network inspect on
+The redirect to http://localhost:4000/auth/google
+http://localhost:4000/auth/google?code=4/0AWgavdcH9X3vzgaDsZI9_ebJ7vgFnG4tic0I1dFFi1F6ycIckbIXtL-ME2r3uoMVN_t_vg&scope=email%20profile%20https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email%20openid&authuser=0&hd=xxx.com&prompt=consent
+has Response Header with auth token in a cookie
+The auth token is a JWT token
+auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTk5MzAxOTM2NzkxMzMwMzEzMCIsImVtYWlsIjoiYmludS5iLnZhcmdoZXNlQGFjY2VudHVyZS5jb20iLCJ2ZXJpZmllZF9lbWFpbCI6dHJ1ZSwibmFtZSI6IkJpbnUgVmFyZ2hlc2UiLCJnaXZlbl9uYW1lIjoiQmludSIsImZhbWlseV9uYW1lIjoiVmFyZ2hlc2UiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUVkRlRwN2hrc3Q4TWgwRHdwOVNobHJoRXZCRmgyZkMwVVU1SlRZZEcyVWE9czk2LWMiLCJsb2NhbGUiOiJlbiIsImhkIjoiYWNjZW50dXJlLmNvbSIsImlhdCI6MTY3MzA3OTYxMH0.BS8IY_llOkXyCNoEQc2otCZnzTGTfEkecX0x2Ycjmwc; Max-Age=900; Path=/; Expires=Sat, 07 Jan 2023 08:35:10 GMT; HttpOnly
+
+copy the 3 part ( part1.part2.part2) JWT token and put it in https://jwt.io
+You get the following in the token header
+
+{
+  "id": "101993019367913303130",
+  "email": "binu.varghese@xx.com",
+  "verified_email": true,
+  "name": "Binu Varghese",
+  "given_name": "Binu",
+  "family_name": "Varghese",
+  "picture": "https://lh3.googleusercontent.com/a/xxx",
+  "locale": "en",
+  "hd": "xxx.com",
+  "iat": 1673079610
+}
+
+
+### USer
+install dependencies with "yarn" or "yarn install"
+run with "yarn dev"
+visit http://localhost:4000/
+You will get the instructions page
+Cli
